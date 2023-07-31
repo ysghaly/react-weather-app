@@ -1,0 +1,32 @@
+        #info {
+            display: flex;
+        }
+        #tempid {
+            width: 50%;
+        }
+        #countryinfo {
+            width: 50%;
+        }
+        #top {
+            text-align: center;
+            padding-bottom: 100px;
+        }
+        #advisory {
+            width: fit-content;
+            margin: auto;
+            margin-top: 20px;
+            padding: 5px;
+        }
+
+        body {
+            width: 80%;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        button {
+            width: 200px;
+            font-size: larger;
+            background-color: green;
+            color: white;
+        }
