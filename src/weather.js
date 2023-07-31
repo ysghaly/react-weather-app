@@ -22,7 +22,7 @@ function Weather() {
   }
   
 
-  const Goe_API_KEY = process.env.REACT_APP_Goe_API_KEY;
+    const Goe_API_KEY = process.env.REACT_APP_Goe_API_KEY;
         const settings = {
             "async": true,
             "crossDomain": true,
@@ -34,7 +34,6 @@ function Weather() {
         var sunset;
         $(() => {
             $.ajax(settings).done(function (response) {
-                console.log(response);
                 //jQuery('#countryinfo').html(response)
                 getAstronomy(response.ip);
             });
@@ -43,7 +42,7 @@ function Weather() {
             $("#update").click(function (){
                 settings.url = "https://api.ipgeolocation.io/getip";
                 $.ajax(settings).done(function (response) {
-                    console.log(response);
+
                     //jQuery('#countryinfo').html(response)
                     $("#countryinfo").empty();
                     $("#tempid").empty();;
@@ -58,11 +57,8 @@ function Weather() {
         function getAstronomy(ip) {
             settings.url = `https://api.ipgeolocation.io/astronomy?apiKey=${Goe_API_KEY}&ip=${ip}`;
             $.ajax(settings).done(function (response) {
-                console.log('SunRise', response.sunrise);
-                console.log('SunSet', response.sunset);
                 sunrise = response.sunrise;
                 sunset = response.sunset;
-                console.log('Response', response);
                 getWeather(response.location.latitude, response.location.longitude);
                 $('#countryinfo').append(`<h2>${response.location.city}, ${response.location.state_prov}, ${response.location.country_name} </h2>`);
             });
@@ -71,11 +67,11 @@ function Weather() {
  
         function getWeather(lat, lon) {
             // Create a free account on https://openweathermap.org/
-            const Weather_API_key = process.env.REACT_APP_Weather_API_key;
+            const Weather_API_key = process.env.REACT_APP_Weather_API_key;        
+
             settings.url = `https://api.openweathermap.org/data/2.5/weather?` +
                 `lat=${lat}&lon=${lon}&appid=${Weather_API_key}&units=metric`
             $.ajax(settings).done(function (response) {
-                console.log(response);
                 printWeather(response);
                 //jQuery('#countryinfo').html(JSON.stringify(response));
             });
@@ -103,7 +99,10 @@ function Weather() {
                 $("#advisory").css("background-color", "red");
             }
 
-            var daytime = ((response.sys.sunrise * 1000) < current_time.getTime()) && (current_time.getTime() < (response.sys.sunset * 1000));
+            var daytime = ((response.sys.sunrise) < current_time.getTime()) && (current_time.getTime() < (response.sys.sunset));
+            console.log(response);
+            console.log(new Date(response.sys.sunset * 1000));
+            console.log(new Date(current_time.getTime()));
             if (daytime){
                 $("body").css("background-color", "lightblue");
             }
@@ -139,5 +138,5 @@ function Weather() {
         }
 
 
-        
+
   export default Weather;
