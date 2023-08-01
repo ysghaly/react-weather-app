@@ -99,10 +99,10 @@ function Weather() {
                 $("#advisory").css("background-color", "red");
             }
 
-            var daytime = ((response.sys.sunrise) < current_time.getTime()) && (current_time.getTime() < (response.sys.sunset));
-            console.log(response);
-            console.log(new Date(response.sys.sunset * 1000));
-            console.log(new Date(current_time.getTime()));
+            var time_now = current_time.getTime() / 1000;
+            var daytime = ((response.sys.sunrise) < time_now) && (time_now < (response.sys.sunset));
+            
+
             if (daytime){
                 $("body").css("background-color", "lightblue");
             }
