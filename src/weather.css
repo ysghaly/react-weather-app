@@ -25,8 +25,16 @@
         }
 
         button {
-            width: 200px;
+            width: fit-content;
             font-size: larger;
             background-color: green;
             color: white;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+
+        .refresh{
+            font-size: xx-large;
+            cursor: pointer;
+            font-weight: bold;
         }
