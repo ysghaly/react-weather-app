@@ -35,6 +35,8 @@ function Weather() {
 
     const Goe_API_KEY = process.env.REACT_APP_Goe_API_KEY;
     var ip_address;
+    var current_time;
+    var local_date;
         const settings = {
             "async": true,
             "crossDomain": true,
@@ -87,6 +89,8 @@ function Weather() {
             $.ajax(settings).done(function (response) {
                 console.log("Geolocation stuff");
                 console.log(response);
+                current_time = response.current_time;
+                local_date = response.date;
                 sunrise = response.sunrise;
                 sunset = response.sunset;
                 getWeather(response.location.latitude, response.location.longitude);
@@ -130,10 +134,9 @@ function Weather() {
             $('#tempid').append(`<h3>Sunrise: ${sunrise}</h3>`);
             $('#tempid').append(`<h3>Sunset: ${sunset}</h3>`);
 
-            var current_time = getCurrentTime(response);
             var sunsrise_time = getSunriseTime(response);
-            var sunset_time = getSunsetTime(response)
-            $('#tempid').append(`<h3>Current Time: ${current_time.toLocaleTimeString()}</h3>`);
+            var sunset_time = getSunsetTime(response);
+            $('#tempid').append(`<h3>Current Time: ${current_time.slice(0,5)}</h3>`);
 
 
             if (response.main.temp > 30){
@@ -147,16 +150,10 @@ function Weather() {
                 $("#advisory").css("display", "block");
             }
 
-            var time_now = current_time.getTime() / 1000;
-            var time_sunsrise = sunsrise_time.getTime();
-            var time_sunset = sunset_time.getTime();
             console.log("weather stuff ");
             console.log(response);
-            console.log(current_time);
-            console.log(sunsrise_time);
-            console.log(sunset_time);
-            var daytime = ((response.sys.sunrise) < time_now) && (time_now < (response.sys.sunset));
-            
+            // var daytime = ((response.sys.sunrise) < local_time) && (local_time < (response.sys.sunset));
+            var daytime= isDaytime(response);
 
             if (daytime){
                 $("body").css("background-color", "lightblue");
@@ -169,29 +166,65 @@ function Weather() {
             }
         }
 
+        function isDaytime(response){
+            var timezone = response.timezone;
+            var time_offset_hours = (timezone / (60 * 60)) + ((new Date()).getTimezoneOffset() / 60);
+
+            var current_hours = current_time.slice(0,2);
+            var current_min = current_time.slice(3,5);
+            var current_sec = current_time.slice(6,8);
+
+            var current_day = local_date.slice(8,10);
+            var current_month = local_date.slice(5,7);
+            var current_year = local_date.slice(0,4);
+
+
+            var current_date = new Date();
+            current_date.setFullYear(current_year, current_month -1, current_day);
+            current_date.setHours(current_hours);
+            current_date.setMinutes(current_min);
+            current_date.setSeconds(current_sec);
+            
+            
+
+            var sunrise = response.sys.sunrise;
+            var sunset = response.sys.sunset ;
+
+            console.log("this stuff " + time_offset_hours);
+            var rise_date = new Date(sunrise * 1000);
+            var set_date = new Date(sunset * 1000);
+
+            rise_date.setHours(rise_date.getHours() + time_offset_hours);
+            set_date.setHours(set_date.getHours() + time_offset_hours);
+
+            // var rise_hours = rise_date.getHours();
+            // var set_hours = set_date.getHours();
+
+            // var rise_min = rise_date.getMinutes();
+            // var set_min = set_date.getMinutes();
+
+            // var rise_sec = rise_date.getSeconds();
+            // var set_sec = set_date.getSeconds();
+
+            var daytime;
+            
+            console.log("Sunrise: " + rise_date);
+            console.log("Sunset: " + set_date);
+            console.log("Current: " + current_date);
+
+            if ((rise_date.getTime() < current_date.getTime()) && (current_date.getTime() < set_date.getTime()))
+                return true;
+            
+            else
+                return false;
+        }
+
         function getWeatherIcon(icon){
             var url = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
 
             return url;
         }
 
-        function getCurrentTime(response){
-            var timezone = response.timezone;
-
-            const date = new Date();
-            date.setUTCSeconds(date.getSeconds() + timezone);
-
-            const year = date.getUTCFullYear();
-            const month = date.getUTCMonth();
-            const day = date.getUTCDate();
-            const hours = date.getUTCHours();
-            const minutes = date.getUTCMinutes();
-            const seconds = date.getUTCSeconds();
-            const milliseconds = date.getUTCMilliseconds();
-
-            var time = new Date(year, month, day, hours, minutes, seconds, milliseconds);
-            return (time);
-        }
 
         function getSunriseTime(response){
             var timezone = response.timezone;
