@@ -74,8 +74,9 @@ function Weather() {
 
         function clearAll(){
             $("#countryinfo").empty();
-            $("#tempid").empty();;
+            $("#tempid").empty();
             $("#advisory").html("");
+            $("#advisory").css("display", "none");
             $("select").val('');
             console.clear();
         }
@@ -138,10 +139,12 @@ function Weather() {
             if (response.main.temp > 30){
                 $("#advisory").html("High Temperatures");
                 $("#advisory").css("background-color", "red");
+                $("#advisory").css("display", "block");
             }
             else if (response.main.temp < -30){
                 $("#advisory").html("Low Temperatures");
                 $("#advisory").css("background-color", "red");
+                $("#advisory").css("display", "block");
             }
 
             var time_now = current_time.getTime() / 1000;
