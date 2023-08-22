@@ -1,23 +1,42 @@
-        #info {
+        .info {
             display: flex;
+            margin-top: 20px;
         }
         #tempid {
             width: 50%;
         }
         #countryinfo {
             width: 50%;
+            height: fit-content;
+            margin-top: auto;
+            margin-bottom: auto;
         }
         #top {
             text-align: center;
             padding-bottom: 100px;
         }
-        #advisory {
+        
+        #heat_advisory {
             width: fit-content;
             margin: auto;
             margin-top: 20px;
             padding: 5px;
-            display: none;
+            background-color: red;
+            padding: 10px;
+            margin-bottom: 10px;
         }
+
+        
+        #cold_advisory {
+            width: fit-content;
+            margin: auto;
+            margin-top: 20px;
+            padding: 5px;
+            background-color: orange;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
 
         body {
             width: 80%;
