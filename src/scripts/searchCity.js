@@ -16,7 +16,7 @@ const changeCity = (city, update) => {
 
     
 
-    settings.url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather_API_key}`;
+    settings.url = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${Weather_API_key}`;
             $.ajax(settings).done(function (response) {
                 
                 if (response.length > 0)
