@@ -29,7 +29,7 @@ const geoLocation = (root) => {
 
         settings.url = `https://api.ipgeolocation.io/astronomy?apiKey=${Goe_API_KEY}&ip=${ip_address}`;
             $.ajax(settings).done(function (response) {
-                current_time = response.current_time.slice(0,8);
+                // current_time = response.current_time.slice(0,8);
                 local_date = response.date;
                 sunrise = response.sunrise;
                 sunset = response.sunset;
@@ -39,6 +39,8 @@ const geoLocation = (root) => {
                 var city=response.location.city;
                 var state=response.location.state_prov;
                 var country=response.location.country_name;
+                var lat = response.location.latitude;
+                var lon = response.location.longitude;
 
                 const Weather_API_key = process.env.REACT_APP_Weather_API_key;        
 
@@ -55,13 +57,14 @@ const geoLocation = (root) => {
                     var humidity = response.main.humidity;
 
                     var timezone = response.timezone;
+                    current_time = getTime(timezone);
                     var sun_s = response.sys.sunset;
                     var sun_r = response.sys.sunrise;
 
                     isDayTime(weather_icon);
                     root.render(
                       <React.StrictMode>
-                        <App time={[timezone, sun_r, sun_s, current_time, local_date]} ip={ip_address} city={city} state={state} country={country} weather_info={[weather_icon,weather_desc,current_temp,feels_like,humidity, current_time]} />
+                        <App time={[timezone, sun_r, sun_s, current_time, local_date]} location={[lat,lon]} ip={ip_address} city={city} state={state} country={country} weather_info={[weather_icon,weather_desc,current_temp,feels_like,humidity, current_time]} />
                       </React.StrictMode>
                     );
 
@@ -78,6 +81,15 @@ const geoLocation = (root) => {
 
     
 };
+
+
+
+function getTime(timezone){
+    var hours_offset = timezone / (60 * 60);
+    var date = new Date();
+    date.setHours(date.getHours() + hours_offset + (date.getTimezoneOffset() / 60));
+    return (date.toLocaleTimeString());
+}
 
 
 export default geoLocation;

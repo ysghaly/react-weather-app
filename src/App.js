@@ -18,6 +18,8 @@ function App(props) {
   const [city, setCity] = useState(props.city);
   const [state, setState] = useState(props.state);
   const [country, setCountry] = useState(props.country);
+  const [latitude, setLatitude] = useState(props.location[0]);
+  const [longitude, setLongitude] = useState(props.location[1]);
 
   
   const [weather_icon, setWeather_icon] = useState(props.weather_info[0]);
@@ -32,9 +34,8 @@ function App(props) {
   return (
     <div className="App">
       <Header temp={current_temp} />
-      <Form icon={weather_icon} ip={[ip,setIp]} update={[setCity,setState,setCountry,setWeather_icon,setWeather_desc,setCurrent_temp,setFeels_like,setHumidity,setTime]}/>
+      <Form icon={weather_icon} setIp={setIp} location={[latitude,longitude]} city={city} setCity={setCity} state={state} country={country} update={[setCity,setState,setCountry,setWeather_icon,setWeather_desc,setCurrent_temp,setFeels_like,setHumidity,setTime, setLatitude, setLongitude]}/>
       <br /><br />
-      <Search  update={[setCity,setState,setCountry,setWeather_icon,setWeather_desc,setCurrent_temp,setFeels_like,setHumidity,setTime]} />
       <div className='info'>
 
         <Location data={[city, state, country, time]}/>

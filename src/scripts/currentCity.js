@@ -18,7 +18,7 @@ const currentCity = (props) => {
     $.ajax(settings).done(function (response) {
         //jQuery('#countryinfo').html(response)
         ip_address = response.ip;
-        props.ip[1](ip_address);
+        props.setIp(ip_address);
         var current_time;
         var sunrise;
         var sunset;
@@ -27,7 +27,7 @@ const currentCity = (props) => {
 
         settings.url = `https://api.ipgeolocation.io/astronomy?apiKey=${Goe_API_KEY}&ip=${ip_address}`;
                 $.ajax(settings).done(function (response) {
-                    var current_time = response.current_time.slice(0,8);
+                    // var current_time = response.current_time.slice(0,8);
                     var local_date = response.date;
                     var sunrise = response.sunrise;
                     var sunset = response.sunset;
@@ -37,6 +37,8 @@ const currentCity = (props) => {
                     var city=response.location.city;
                     var state=response.location.state_prov;
                     var country=response.location.country_name;
+                    var lat = response.location.latitude;
+                    var lon = response.location.longitude;
 
                     const Weather_API_key = process.env.REACT_APP_Weather_API_key;        
 
@@ -51,6 +53,8 @@ const currentCity = (props) => {
                         var current_temp = response.main.temp;
                         var feels_like = response.main.feels_like;
                         var humidity = response.main.humidity;
+                        current_time = getTime(response.timezone);
+
 
                         props.update[0](city);
                         props.update[1](state);
@@ -61,6 +65,8 @@ const currentCity = (props) => {
                         props.update[6](feels_like);
                         props.update[7](humidity);
                         props.update[8](current_time);
+                        props.update[9](lat);
+                        props.update[10](lon);
 
                         isDayTime(weather_icon);
 
@@ -73,6 +79,13 @@ const currentCity = (props) => {
 
     }); 
 
+}
+
+function getTime(timezone){
+    var hours_offset = timezone / (60 * 60);
+    var date = new Date();
+    date.setHours(date.getHours() + hours_offset + (date.getTimezoneOffset() / 60));
+    return (date.toLocaleTimeString());
 }
 
 export default currentCity;

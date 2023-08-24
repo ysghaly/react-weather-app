@@ -44,10 +44,7 @@ function testDaytime(props){
     // var set_sec = set_date.getSeconds();
 
     var daytime;
-    
-    console.log("Sunrise: " + rise_date);
-    console.log("Sunset: " + set_date);
-    console.log("Current: " + current_date);
+   
 
     if ((rise_date.getTime() < current_date.getTime()) && (current_date.getTime() < set_date.getTime()))
         return true;
@@ -66,12 +63,12 @@ const isDayTime = (props) => {
     var daytime = iconDay(props);
 
     if (daytime){
-        $("body").css("background-color", "lightblue");
-        $("body").css("color", "black");
+        $("#root").css("background-color", "lightblue");
+        $("#root").css("color", "black");
     }
     else {
-        $("body").css("background-color", "darkblue");
-        $("body").css("color", "white");
+        $("#root").css("background-color", "darkblue");
+        $("#root").css("color", "white");
 
     }
 }

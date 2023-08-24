@@ -1,18 +1,27 @@
 import changeCity from "../scripts/chageCity";  
+import search from "../scripts/search";
 import currentCity from "../scripts/currentCity";  
 import $ from "jquery";
+import Search from './Search';
 
 
 
 function Form(props) {
 
   const refresh = () => {
-    changeCity(props.ip[0], props);
+    var response = {
+      "name" : props.city,
+      "state" : props.state,
+      "country" : props.country,
+      "lat" : props.location[0],
+      "lon" : props.location[1]
+    };
+    search(response, props.update);
   }
 
   const change_ip = (event) => {
-    var new_ip = (event.currentTarget.value);
-    changeCity(new_ip, props);
+    var city = (event.currentTarget.value);
+    search(city, props.update);
   }
   const getCurrentLocation = () => {
     
@@ -23,16 +32,8 @@ function Form(props) {
       <div className="form">
         <div>Refresh <br></br><span onClick={() => {refresh()}} className="refresh">&#x21bb;</span><br/><br/></div>
         <button id="update" onClick={() => {getCurrentLocation()}}>Current Location</button>
-        <label>Other Cities: </label>
-        <select id="select_city" onChange={(event) => {change_ip(event)}}>
-            <option value=""></option>
-            <option value="174.0.182.145">Calgary</option>
-            <option value="23.236.229.228">Hamilton</option>
-            <option value="158.69.60.97">Montreal</option>
-            <option value="188.244.45.250">Moscow</option>
-            <option value="210.146.35.2">Tokyo</option>
-            <option value="54.240.197.233">Dublin</option>
-        </select>
+        <Search city={[props.city, props.setCity]}  update={props.update} />
+
       </div>
     );
   }

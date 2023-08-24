@@ -14,7 +14,7 @@ function Location(props) {
 
         
         <div id="countryinfo">
-            <h2>{props.data[0]}, {props.data[1]}, {props.data[2]}</h2>
+            <h2>{props.data[0]}, {props.data[1] && props.data[1] + ', '} {props.data[2]}</h2>
             <h3>Current Time: {props.data[3]}</h3>
         </div>
     );
