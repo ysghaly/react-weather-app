@@ -17,8 +17,8 @@ const geoLocation = (root) => {
         "url": `https://api.ipgeolocation.io/getip`,
         "method": "GET"
     };
-    $.ajax(geo_settings).done(function (response) {
-        ip_address = response.ip;
+    $.ajax(geo_settings).done(function (geo_data) {
+        ip_address = geo_data.ip;
 
         
         const settings = {
@@ -33,6 +33,7 @@ const geoLocation = (root) => {
         
         $.ajax(settings).done(function (response) {
             //jQuery('#countryinfo').html(response)
+            console.log(response);
             var ip_address = response.ip;
             var current_time;
             var sunrise;

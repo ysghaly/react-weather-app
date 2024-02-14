@@ -25,12 +25,12 @@ app.get('/', (req,res)=>{
         // } 
    };
    
-    if ((JSON.stringify(req.headers["lat"]) == null) && (JSON.stringify(req.headers["lon"]) == null) && (JSON.stringify(req.headers["search"]) == null)){
+    if ((JSON.stringify(req.headers["ip"]) != null) && (JSON.stringify(req.headers["lat"]) == null) && (JSON.stringify(req.headers["lon"]) == null) && (JSON.stringify(req.headers["search"]) == null)){
         
         axios.request(options).then(function (response) {
             ip_address = req.headers["ip"];
             options.url = `https://api.ipgeolocation.io/astronomy?apiKey=${Goe_API_KEY}&ip=${ip_address}`;
-            // console.log(req.headers["ip"]);
+            console.log(req.headers["ip"]);
             axios.request(options).then(function (response) { 
                 getWeather(response.data, options, res);
 
