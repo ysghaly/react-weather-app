@@ -10,7 +10,7 @@ const cors = require('cors')
 app.use(cors())
 
 // listening for port 5000
-app.listen(5000, ()=> console.log(`Server is running on ${port}` ))
+app.listen(port, ()=> console.log(`Server is running on ${port}` ))
 
 // API request
 app.get('/', (req,res)=>{  
@@ -25,7 +25,7 @@ app.get('/', (req,res)=>{
         // } 
    };
    
-    if ((JSON.stringify(req.headers["ip"]) != null) && (JSON.stringify(req.headers["lat"]) == null) && (JSON.stringify(req.headers["lon"]) == null) && (JSON.stringify(req.headers["search"]) == null)){
+    if ((JSON.stringify(req.headers["ip"]) != null)){
         
         axios.request(options).then(function (response) {
             ip_address = req.headers["ip"];
@@ -42,7 +42,7 @@ app.get('/', (req,res)=>{
         }); 
     }
 
-    else if ((req.headers["search"]) == null) {
+    else if (((req.headers["lat"]) != null) && (req.headers["lon"]) != null) {
         
         
         const Weather_API_key = process.env.REACT_APP_Weather_API_key;
@@ -57,7 +57,7 @@ app.get('/', (req,res)=>{
         
     }
 
-    else {
+    else if ((req.headers["search"]) != null) {
         
         const Weather_API_key = process.env.REACT_APP_Weather_API_key; 
 
@@ -67,6 +67,10 @@ app.get('/', (req,res)=>{
         }).catch(function (error) {
             console.error(error);
         });
+    }
+
+    else {
+        res.json({"404": "I've got nothing"});
     }
     
 
