@@ -6,49 +6,66 @@ import isDayTime from '../scripts/isDayTime';
 
 
 
-const settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": `http://localhost:5000`,
-    "method": "GET"
-};
 
 const geoLocation = (root) => {
-    
-    $.ajax(settings).done(function (response) {
-        //jQuery('#countryinfo').html(response)
-        var ip_address = response.ip;
-        var current_time;
-        var sunrise;
-        var sunset;
-        var local_date = response.date;
-        sunrise = response.sunrise;
-        sunset = response.sunset;
-        var city=response.location.city;
-        var state=response.location.state_prov;
-        var country=response.location.country_name;
-        var lat = response.location.latitude;
-        var lon = response.location.longitude;
-        var weather_icon = response.weather[0].icon;
-        var weather_desc = response.weather[0].description;
-        var current_temp = response.main.temp;
-        var feels_like = response.main.feels_like;
-        var humidity = response.main.humidity;
 
-        var timezone = response.timezone;
-        current_time = getTime(timezone);
-        var sun_s = response.sys.sunset;
-        var sun_r = response.sys.sunrise;
+        
+    var ip_address;
+    const geo_settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": `https://api.ipgeolocation.io/getip`,
+        "method": "GET"
+    };
+    $.ajax(geo_settings).done(function (response) {
+        ip_address = response.ip;
 
-        isDayTime(weather_icon);
-        root.render(
-            <React.StrictMode>
-            <App time={[timezone, sun_r, sun_s, current_time, local_date]} location={[lat,lon]} ip={ip_address} city={city} state={state} country={country} weather_info={[weather_icon,weather_desc,current_temp,feels_like,humidity, current_time]} />
-            </React.StrictMode>
-        );
+        
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": process.env.REACT_APP_SERVER_URL,
+            "headers": {
+                "ip": ip_address
+            },
+            "method": "GET"
+        };
+        
+        $.ajax(settings).done(function (response) {
+            //jQuery('#countryinfo').html(response)
+            var ip_address = response.ip;
+            var current_time;
+            var sunrise;
+            var sunset;
+            var local_date = response.date;
+            sunrise = response.sunrise;
+            sunset = response.sunset;
+            var city=response.location.city;
+            var state=response.location.state_prov;
+            var country=response.location.country_name;
+            var lat = response.location.latitude;
+            var lon = response.location.longitude;
+            var weather_icon = response.weather[0].icon;
+            var weather_desc = response.weather[0].description;
+            var current_temp = response.main.temp;
+            var feels_like = response.main.feels_like;
+            var humidity = response.main.humidity;
+
+            var timezone = response.timezone;
+            current_time = getTime(timezone);
+            var sun_s = response.sys.sunset;
+            var sun_r = response.sys.sunrise;
+
+            isDayTime(weather_icon);
+            root.render(
+                <React.StrictMode>
+                <App time={[timezone, sun_r, sun_s, current_time, local_date]} location={[lat,lon]} ip={ip_address} city={city} state={state} country={country} weather_info={[weather_icon,weather_desc,current_temp,feels_like,humidity, current_time]} />
+                </React.StrictMode>
+            );
 
 
         });
+    });
 
 
 }

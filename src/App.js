@@ -31,23 +31,6 @@ function App(props) {
     
   // isDayTime(weather_icon);
 
-  useEffect(()=>{
-    // console.log("test");
-    fetch('http://localhost:5000')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-
-  }, [])
 
   return (
     <div className="App">

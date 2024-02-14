@@ -33,7 +33,7 @@ function search(data, update){
     const settings = {
         "async": true,
         "crossDomain": true,
-        "url": `http://localhost:5000`,
+        "url": process.env.REACT_APP_SERVER_URL,
         "headers": {
             "lat": data.lat,
             "lon": data.lon
