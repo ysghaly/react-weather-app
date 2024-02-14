@@ -11,6 +11,7 @@ import $ from "jquery";
 function Search(props) {
     const [searchTerm, setSearchTerm] = useState('');
     const [cel, setCel] = useState(null);
+    const [selectedValue, setSelectedValue] = useState(0);
 
     const [searchResults, setSearchResults] = useState([]);
     const [response, setResponse] = useState(null);
@@ -59,11 +60,11 @@ function Search(props) {
 
 
     const handleSubmit = (event) => {
-        console.log('The form submitted with input: ' + response.lat + " " + response.lon + response);
+        console.log(selectedValue);
         props.update[9](response.lat);
         props.update[10](response.lon);
         setCel(() => (searchTerm - 32) / 1.8);
-        search(response[0], props.update);
+        search(response[selectedValue], props.update);
         event.preventDefault(); // Prevent default form submission behavior 
     }
 
@@ -88,7 +89,7 @@ function Search(props) {
                         onChange={handleChange} className="form-control" required/>
                         &nbsp;
                 </div>
-                <Select data={response} city={props.city} />
+                <Select data={response} city={props.city} set_city={setSelectedValue} />
                 <input data-testid="search_button" type="submit" value="Search" className="btn btn-primary mb-3" />
             </form>
         </div>
