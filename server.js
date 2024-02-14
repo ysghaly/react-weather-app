@@ -14,7 +14,7 @@ app.listen(port, ()=> console.log(`Server is running on ${port}` ))
 
 // API request
 app.get('/', (req,res)=>{  
-    
+    res.set('Access-Control-Allow-Origin', '*');
     const Goe_API_KEY = process.env.REACT_APP_Goe_API_KEY;
     const options = {
         method: 'GET',
