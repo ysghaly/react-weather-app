@@ -18,12 +18,12 @@ function Select(props) {
     //     { country: 'us', name: 'USA' },
     //     { country: "eg", name: 'Egypt' }];
     const cities = props.data;
+    console.log("cities" + cities);
     return (
         <div className="container p-3 bg-warning">
             {/* <i className='text-danger fw-bold'>Select component</i> */}
                 <select value={userInput} onChange={handleChange}
                     className='form-select col-md' required style={{minWidth: "150px"}}>
-                        {(!cities) && <option></option>}
                     {cities && cities.map((city, index) =>
                         <option key={city.country + index} value={`${city.name},${city.country}`}>
                             {city.name}, {city.state && city.state +", "} {city.country}</option>

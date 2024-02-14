@@ -3,12 +3,12 @@ import Header from './components/Header';
 import Form from './components/Form';
 import Weather from './components/Weather';
 import Location from './components/Location';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import $ from "jquery";
 import './weather.css';
 import isDayTime from './scripts/isDayTime';
 import Search from './components/Search';
-
+import axios from "axios";
 
 function App(props) {
 
@@ -30,6 +30,24 @@ function App(props) {
   const [time, setTime] = useState(props.weather_info[5]);
     
   // isDayTime(weather_icon);
+
+  useEffect(()=>{
+    // console.log("test");
+    fetch('http://localhost:5000')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+  }, [])
 
   return (
     <div className="App">

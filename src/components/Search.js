@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import searchCity from '../scripts/searchCity';
 import search from '../scripts/search';
 import Select from "./Select";
+import $ from "jquery";
 
 
 // Use this API to search for cities: 
@@ -22,23 +23,37 @@ function Search(props) {
 
     useEffect(() => {
         // API docs https://openweathermap.org/api/geocoding-api
+  
 
-        const Weather_API_key = process.env.REACT_APP_Weather_API_key;     
-
-        const url = `https://api.openweathermap.org/geo/1.0/direct`;
             
         if (searchTerm){
-            fetch(`${url}?q=${searchTerm}&limit=5&appid=${Weather_API_key}`)
-                .then(response => response.json())
-                .then(data => {
-                    setResponse(data);
+            console.log("search term: " + searchTerm);
+            const settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": `http://localhost:5000`,
+                "headers": {
+                    "search": searchTerm 
+                },
+                "method": "GET"
+            };
+        
+
+            $.ajax(settings).done(function (response) {
+                setResponse(response);
+
+            });
+            // fetch(`${url}?q=${searchTerm}&limit=5&appid=${Weather_API_key}`)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         console.log("test2: " + data);
+            //         setResponse(data);
                     
-                });
+            //     });
         }
         else {
-            setResponse(null);
+            setResponse(false);
         }
-            
     }, [searchTerm]);
 
 
